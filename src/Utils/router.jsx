@@ -5,6 +5,10 @@ import { Login } from "../Pages/Auth/login";
 import { Register } from "../Pages/Auth/register";
 import { UserSkin } from "../Skins/userSkin";
 import { Book } from "../Pages/Admin/book";
+import { Category } from "../Pages/Admin/Category";
+import { User } from "../Pages/Admin/User";
+import { Admin } from "../Pages/Admin/Admin";
+import { Borrowing } from "../Pages/Admin/Borrowing";
 
 const router = createBrowserRouter([
     {
@@ -28,6 +32,22 @@ const router = createBrowserRouter([
             {
                 path: '/master-data/buku',
                 element: <Book />
+            },
+            {
+                path: '/master-data/kategori',
+                element: <Category />
+            },
+            {
+                path: '/master-data/admin',
+                element: <Admin />
+            },
+            {
+                path: '/master-data/pengguna',
+                element: <User />
+            },
+            {
+                path: '/manajemen/peminjaman',
+                element: <Borrowing />
             },
         ],
     },

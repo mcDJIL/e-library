@@ -25705,3 +25705,7 @@ table.dataTable tbody td.select-checkbox:after {
 .nav-item {
   text-decoration: none !important;
 }
+
+.borrow-detail p {
+  font-size: 18px;
+}

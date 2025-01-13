@@ -12,6 +12,7 @@ export const Book = () => {
   const [selectedBook, setSelectedBook] = useState(null);
   const [categories, setCategories] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const inputTitle = useRef();
   const inputDesc = useRef();
@@ -98,16 +99,7 @@ export const Book = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // let data = {
-    //     title: inputTitle.current.value,
-    //     description: inputDesc.current.value,
-    //     author: inputAuthor.current.value,
-    //     publisher: inputPublisher.current.value,
-    //     published_at: inputPublished_at.current.value,
-    //     book_cover: dropzoneRef.current.files[0],
-    // }
-
-    // data.categories = selectedCategories.map(category => category.value);
+    setIsLoading(true);
     
     const formData = new FormData();
     formData.append('title', inputTitle.current.value);
@@ -146,6 +138,8 @@ export const Book = () => {
       console.error(error);
 
       showToast(error.response.data.message, 'error');
+    }).finally(() => {
+      setIsLoading(false)
     });
   };
 
@@ -165,6 +159,8 @@ export const Book = () => {
     }).catch((error) => {
         console.error(error);
         showToast(error.response.data.message, 'error')
+    }).finally(() => {
+      setIsLoading(false)
     });
   };
 
@@ -304,7 +300,7 @@ export const Book = () => {
                 {books.length > 0 ? (
                     books.map((item, index) => (
                       <tr key={index}>
-                        <td>{index + 1}</td>
+                        <td style={{width: '50px'}}>{index + 1}</td>
                         <td>{item.title}</td>
                         <td>{item.description}</td>
                         <td>{item.author}</td>
@@ -437,8 +433,12 @@ export const Book = () => {
             </div>
 
             <div className="">
-              <button onClick={handleSubmit} className="btn btn-primary me-2">
-                {editMode ? 'Simpan Perubahan' : 'Tambah'}
+              <button disabled={isLoading} onClick={handleSubmit} className="btn btn-primary me-2">
+              {isLoading && (
+                    <i className="fa fa-spinner fa-spin me-1"></i>
+                )}
+
+                {isLoading ? ' Loading' : editMode ? 'Simpan Perubahan' : 'Tambah'}
               </button>
               
               <button

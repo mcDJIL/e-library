@@ -1,8 +1,10 @@
 import { useLocation } from "react-router-dom"
+import Cookies from 'js-cookie';
 
 export const Sidebar = () => {
 
     const location = useLocation();
+    const role = Cookies.get('role');
 
     return (
         <nav className="sidebar sidebar-offcanvas" id="sidebar">
@@ -43,22 +45,26 @@ export const Sidebar = () => {
                         Kategori
                       </a>
                     </li>
-                    <li className="nav-item">
-                      <a
-                        className="nav-link"
-                        href="/master-data/admin"
-                      >
-                        Admin
-                      </a>
-                    </li>
-                    <li className="nav-item">
-                      <a
-                        className="nav-link"
-                        href="/master-data/pengguna"
-                      >
-                        Pengguna
-                      </a>
-                    </li>
+                    {role === 'superadmin' ? (
+                      <>
+                      <li className="nav-item">
+                        <a
+                          className="nav-link"
+                          href="/master-data/admin"
+                        >
+                          Admin
+                        </a>
+                      </li>
+                      <li className="nav-item">
+                        <a
+                          className="nav-link"
+                          href="/master-data/pengguna"
+                        >
+                          Pengguna
+                        </a>
+                      </li>
+                      </>
+                    ) : null}
                   </ul>
                 </div>
               </li>
@@ -95,7 +101,7 @@ export const Sidebar = () => {
                 <div className="collapse" id="charts">
                   <ul className="nav flex-column sub-menu">
                     <li className="nav-item">
-                      <a className="nav-link" href="/laporan/peminjaman">
+                      <a className="nav-link" href="/laporan">
                         Peminjaman
                       </a>
                     </li>
