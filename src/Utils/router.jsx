@@ -12,6 +12,7 @@ import { Borrowing } from "../Pages/Admin/Borrowing";
 import { Home } from "../Pages/User/Home";
 import { UserBook } from "../Pages/User/UserBook";
 import { DetailBook } from "../Pages/User/DetailBook";
+import { Collection } from "../Pages/User/Collection";
 
 const router = createBrowserRouter([
     {
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
             {
                 path: '/detail-buku/:id',
                 element: <DetailBook />
+            },
+            {
+                path: '/koleksi',
+                element: <Collection />
             },
         ],
     },

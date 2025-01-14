@@ -25710,15 +25710,55 @@ table.dataTable tbody td.select-checkbox:after {
   font-size: 18px;
 }
 
-.detail {
-  max-width: 1000px;
-}
-
 .detail-book img {
   width: 450px;
   height: 600px;
 }
 
+.detail-book p {
+  font-size: 16px;
+}
+
+.detail-book .btn-outline-dark:hover {
+  background-color: #FF4747 !important;
+  border-color: #FF4747 !important;
+}
+
+.detail-book .btn-outline-danger:hover {
+  color: #ffffff !important;
+}
+
+.detail-book .btn-outline-danger.active {
+  color: #ffffff !important;
+}
+
+.detail-book .btn-outline-danger.active:hover {
+  color: #FF4747 !important;
+  border-color: #FF4747 !important;
+  background-color: #ffffff !important;
+}
+
 .stars-container {
-  color: yellow;
+  color: #fb8500;
+  font-size: 20px;
+  display: flex;
+  gap: 4px;
+}
+
+.card-button .btn-outline-danger:hover {
+  color: #ffffff !important;
+}
+
+.card-button button {
+  z-index: 99 !important;
+}
+
+.card-button .btn-outline-danger.active {
+  color: #ffffff !important;
+}
+
+.card-button .btn-outline-danger.active:hover {
+  color: #FF4747 !important;
+  border-color: #FF4747 !important;
+  background-color: #ffffff !important;
 }

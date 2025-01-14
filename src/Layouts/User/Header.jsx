@@ -25,32 +25,32 @@ export const Header = () => {
     }
 
     return (
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container">
-    <a class="navbar-brand fw-bold fs-3" href="/">E-Library</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
+        <nav className="navbar navbar-expand-lg bg-body-tertiary">
+  <div className="container">
+    <a className="navbar-brand fw-bold fs-3" href="/">E-Library</a>
+    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+      <span className="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class={ location.pathname == '/' ? "nav-link active" : 'nav-link' } style={{fontSize: '16px'}} aria-current="page" href="/">Beranda</a>
+    <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
+      <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+        <li className="nav-item">
+          <a className={ location.pathname == '/' ? "nav-link active" : 'nav-link' } style={{fontSize: '16px'}} aria-current="page" href="/">Beranda</a>
         </li>
-        <li class="nav-item">
-          <a class={ location.pathname == '/buku' ? "nav-link active" : 'nav-link' } style={{fontSize: '16px'}} aria-current="page" href="/buku">Buku</a>
+        <li className="nav-item">
+          <a className={ location.pathname == '/buku' ? "nav-link active" : 'nav-link' } style={{fontSize: '16px'}} aria-current="page" href="/buku">Buku</a>
         </li>
-        <li class="nav-item">
-          <a class={ location.pathname == '/koleksi' ? "nav-link active" : 'nav-link' } style={{fontSize: '16px'}} aria-current="page" href="/koleksi">Koleksi</a>
+        <li className="nav-item">
+          <a className={ location.pathname == '/koleksi' ? "nav-link active" : 'nav-link' } style={{fontSize: '16px'}} aria-current="page" href="/koleksi">Koleksi</a>
         </li>
       </ul>
-      <div class="d-flex" role="search">
+      <div className="d-flex" role="search">
         {token == null ? (
             <>
-            <a class="btn btn-outline-primary me-2" href='/login'>Login</a>
-            <a class="btn btn-primary" href='/register'>Daftar</a>
+            <a className="btn btn-outline-primary me-2" href='/login'>Login</a>
+            <a className="btn btn-primary" href='/register'>Daftar</a>
             </>
         ) : (
-            <button class="btn btn-outline-danger me-2" onClick={logout}>Logout</button>
+            <button className="btn btn-outline-danger me-2" onClick={logout}>Logout</button>
         )}
       </div>
     </div>

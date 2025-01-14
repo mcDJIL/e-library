@@ -1,30 +1,146 @@
+import { useEffect, useState } from "react"
+import client from "../../Utils/client";
+import { showToast } from "../../Constants/ShowToast";
+import Swal from 'sweetalert2';
+import Cookies from 'js-cookie';
+import { ToastContainer } from "react-toastify";
+
 export const UserBook = () => {
 
+    const name = Cookies.get('name');
+
+    const [books, setBooks] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        getBooks();
+    }, []);
+
+    const getBooks = () => {
+        client.get(`all-books?name=${name}`).then(({data}) => {
+            console.log(data);
+            
+            setBooks(data.data);
+        }).catch((error) => {
+            console.error(error);
+        })
+    }
+
+    const borrowBook = (id) => {
+        setIsLoading(true);
+
+        client.post(`borrow-book/${id}`).then(({data}) => {
+            Swal.fire({
+                title: "Berhasil",
+                text: data.message,
+                icon: "info"
+              });
+            getBooks();
+        }).catch((error) => {
+            console.error(error);
+            
+            if (error.response.data.message == "Unauthenticated.") {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Oops...",
+                                text: "Anda belum login, silahkan login terlebih dahulu!",
+                              });
+                            } else {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Oops...",
+                                    text: error.response.data.message,
+                                  });
+                            }
+        }).finally(() => {
+            setIsLoading(false);
+        })
+    }
+
+    const addFavorite = (id) => {
+        setIsLoading(true)
+
+        client.post(`add-favorite/${id}`).then(({data}) => {
+            showToast(data.message, 'success');
+            getBooks();
+        }).catch((error) => {
+            console.error(error);
+            
+            if (error.response.data.message == "Unauthenticated.") {
+                showToast("Anda belum login, silahkan login terlebih dahulu!", 'error');
+            } else {
+                showToast(error.response.data.message, 'error');
+            }
+        }).finally(() => {
+            setIsLoading(false);
+        })
+    }
+
+    const removeFavorite = (id) => {
+        setIsLoading(true);
+
+        client.post(`remove-favorite/${id}`).then(({data}) => {
+            showToast(data.message, 'success');
+            getBooks();
+        }).catch((error) => {
+            console.error(error);
+            
+            if (error.response.data.message == "Unauthenticated.") {
+                showToast("Anda belum login, silahkan login terlebih dahulu!", 'error');
+            } else {
+                showToast(error.response.data.message, 'error');
+            }
+        }).finally(() => {
+            setIsLoading(false);
+        })
+    }
+
     return (
+        <>
+        <ToastContainer />
+
         <div className="container pt-5">
             <h2>Daftar Buku</h2>
 
             <div className="row mt-4">
-                <a href="/detail-buku/1" className="col-12 col-md-6 col-lg-4 col-xl-3 mb-5 d-flex justify-content-center text-decoration-none">
+                {books.map((item, index) => (
+                <div key={index} className="col-12 col-md-6 col-lg-4 col-xl-3 mb-5 d-flex justify-content-center text-decoration-none">
                     <div className="card" style={{width: '280px', border: '1px solid #000', height: '500px'}}>
-                        <img style={{height: '280px'}} src="http://127.0.0.1:8000/uploads/books/1736841607_WhatsApp%20Image%202024-08-17%20at%2021.34.39.jpeg" alt="" className="card-img-top object-fit-cover" />
+                        <a href={`/detail-buku/${item.id}`}>
+                        <img style={{height: '280px'}} src={`http://127.0.0.1:8000/${item.book_cover}`} alt="" className="card-img-top object-fit-cover" />
+                        </a>
                         <div className="card-body">
-                            <h5 className="card-title mb-2" style={{lineHeight: '25px'}}>Lorem ipsum dolor sit amet consectetur</h5>
-                            <p className="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. lorem ipsum</p>
+                            <h5 className="card-title mb-2" style={{lineHeight: '25px'}}>{item.title}</h5>
+                            <p className="card-text">{item.description}</p>
                         
-                            <div className="mt-3 d-flex justify-content-end">
+                            <div className="mt-3 d-flex justify-content-end card-button">
 
-                                <button className="btn btn-outline-primary btn-rounded btn-icon me-2">
-                                    <i className="ti-book"></i>
+                                {item.availability_status === 'Buku Sedang Dipinjam' ? (
+                                <button disabled className="btn btn-outline-primary btn-rounded btn-icon me-2">
+                                    <i className="fa fa-book"></i>
                                 </button>
-                                <button className="btn btn-outline-danger btn-rounded btn-icon">
-                                    <i className="ti-heart"></i>
+                                ) : (
+                                <button disabled={isLoading} onClick={() => borrowBook(item.id)} className="btn btn-outline-primary btn-rounded btn-icon me-2">
+                                    <i className="fa fa-book"></i>
                                 </button>
+                                )}
+
+                                {item.favorite_book != false ? (
+                                <button disabled={isLoading} onClick={() => removeFavorite(item.id)} className="btn btn-outline-danger active btn-rounded btn-icon">
+                                    <i className="fa fa-heart"></i>
+                                </button>
+                                ) : (
+                                <button disabled={isLoading} onClick={() => addFavorite(item.id)} className="btn btn-outline-danger btn-rounded btn-icon">
+                                    <i className="fa fa-heart"></i>
+                                </button>
+                                )}
                             </div>
                         </div>
                     </div>
-                </a>
+                </div>
+                ))}
             </div>
         </div>
+        </>
     )
 }

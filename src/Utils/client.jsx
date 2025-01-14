@@ -9,7 +9,8 @@ client.interceptors.request.use((config) => {
     let token = Cookies.get('token');
     
     config.headers = {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json'
     }
     
     return config;
