@@ -1,8 +1,13 @@
+import { Outlet } from "react-router-dom"
+import { Header } from "../Layouts/User/header"
+
 export const UserSkin = () => {
 
     return (
         <>
-            <h1>Hello World</h1>
+            <Header />
+
+            <Outlet />
         </>
     )
 }

@@ -25709,3 +25709,16 @@ table.dataTable tbody td.select-checkbox:after {
 .borrow-detail p {
   font-size: 18px;
 }
+
+.detail {
+  max-width: 1000px;
+}
+
+.detail-book img {
+  width: 450px;
+  height: 600px;
+}
+
+.stars-container {
+  color: yellow;
+}

@@ -9,6 +9,9 @@ import { Category } from "../Pages/Admin/Category";
 import { User } from "../Pages/Admin/User";
 import { Admin } from "../Pages/Admin/Admin";
 import { Borrowing } from "../Pages/Admin/Borrowing";
+import { Home } from "../Pages/User/Home";
+import { UserBook } from "../Pages/User/UserBook";
+import { DetailBook } from "../Pages/User/DetailBook";
 
 const router = createBrowserRouter([
     {
@@ -17,8 +20,16 @@ const router = createBrowserRouter([
         children: [
             {
                 path: '/',
-                element: ''
-            }
+                element: <Home />
+            },
+            {
+                path: '/buku',
+                element: <UserBook />
+            },
+            {
+                path: '/detail-buku/:id',
+                element: <DetailBook />
+            },
         ],
     },
     {
