@@ -3,8 +3,8 @@ import { useParams } from "react-router-dom";
 import client from "../../Utils/client";
 import { showToast } from "../../Constants/ShowToast";
 import Swal from 'sweetalert2';
-import { ToastContainer } from "react-toastify";
 import Cookies from 'js-cookie';
+import Toastr from "../../Components/Toastr";
 
 export const DetailBook = () => {
   const [book, setBook] = useState({
@@ -194,7 +194,7 @@ const handleStarHover = (hoveredRating) => {
 
   return (
     <>
-    <ToastContainer />
+    <Toastr />
     <div className="container pb-5">
       <div className="d-flex justify-content-center align-items-center flex-wrap">
         <div className="d-flex align-items-center detail pt-5 gap-5">

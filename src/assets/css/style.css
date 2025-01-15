@@ -25762,3 +25762,19 @@ table.dataTable tbody td.select-checkbox:after {
   border-color: #FF4747 !important;
   background-color: #ffffff !important;
 }
+
+@media print {
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .container-fluid {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  .card {
+    border: none !important;
+    box-shadow: none !important;
+  }
+}

@@ -3,7 +3,7 @@ import client from "../../Utils/client";
 import { showToast } from "../../Constants/ShowToast";
 import Swal from 'sweetalert2';
 import Cookies from 'js-cookie';
-import { ToastContainer } from "react-toastify";
+import Toastr from "../../Components/Toastr";
 
 export const UserBook = () => {
 
@@ -97,7 +97,7 @@ export const UserBook = () => {
 
     return (
         <>
-        <ToastContainer />
+        <Toastr />
 
         <div className="container pt-5">
             <h2>Daftar Buku</h2>

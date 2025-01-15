@@ -138,6 +138,9 @@ export const Header = () => {
                   className="dropdown-menu dropdown-menu-right navbar-dropdown"
                   aria-labelledby="profileDropdown"
                 >
+                  <a href='/' className="dropdown-item">
+                    <i className="ti-home text-primary"></i> Kembali
+                  </a>
                   <a onClick={logout} className="dropdown-item">
                     <i className="ti-power-off text-primary"></i> Logout
                   </a>

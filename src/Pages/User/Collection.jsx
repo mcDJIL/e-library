@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import client from "../../Utils/client";
 import { showToast } from "../../Constants/ShowToast";
 import Swal from 'sweetalert2';
-import { ToastContainer } from "react-toastify";
+import Toastr from "../../Components/Toastr";
 
 export const Collection = () => {
     const [books, setBooks] = useState([]);
@@ -98,7 +98,7 @@ export const Collection = () => {
 
     return (
         <>
-        <ToastContainer />
+        <Toastr />
 
         <div className="container pt-5">
             <h2>Daftar Koleksi</h2>

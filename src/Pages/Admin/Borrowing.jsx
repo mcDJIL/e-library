@@ -61,6 +61,20 @@ export const Borrowing = () => {
       });
     }
 
+    const formatDate = (dateString) => {
+      const months = [
+        'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+        'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+      ];
+      
+      const date = new Date(dateString);
+      const day = date.getDate();
+      const month = months[date.getMonth()];
+      const year = date.getFullYear();
+      
+      return `${day} ${month} ${year}`;
+    };
+
   return (
     <>
     <Toastr />
@@ -92,8 +106,8 @@ export const Borrowing = () => {
                         <td style={{width: '50px'}}>{index + 1}</td>
                         <td>{item.user.name}</td>
                         <td>{item.book.title}</td>
-                        <td>{item.borrowed_at}</td>
-                        <td>{item.returned_at ?? '-'}</td>
+                        <td>{formatDate(item.borrowed_at)}</td>
+                        <td>{formatDate(item.returned_at ?? '-')}</td>
                         <td>
                             {item.borrow_status == 'borrowed' ? (
                                 <label className="badge badge-danger">Dipinjam</label>

@@ -13,6 +13,8 @@ import { Home } from "../Pages/User/Home";
 import { UserBook } from "../Pages/User/UserBook";
 import { DetailBook } from "../Pages/User/DetailBook";
 import { Collection } from "../Pages/User/Collection";
+import { Report } from "../Pages/Admin/Report";
+import { PrintReport } from "../Pages/Print/PrintReport";
 
 const router = createBrowserRouter([
     {
@@ -65,6 +67,10 @@ const router = createBrowserRouter([
                 path: '/manajemen/peminjaman',
                 element: <Borrowing />
             },
+            {
+                path: '/laporan',
+                element: <Report />
+            },
         ],
     },
     {
@@ -74,6 +80,10 @@ const router = createBrowserRouter([
     {
         path: '/register',
         element: <Register />
+    },
+    {
+        path: '/print/laporan',
+        element: <PrintReport />
     },
 ])
 

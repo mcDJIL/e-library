@@ -5,6 +5,7 @@ import client from '../../Utils/client';
 export const Header = () => {
 
     const token = Cookies.get('token');
+    const role = Cookies.get('role');
 
     const nav = useNavigate();
 
@@ -25,8 +26,8 @@ export const Header = () => {
     }
 
     return (
-        <nav className="navbar navbar-expand-lg bg-body-tertiary">
-  <div className="container">
+        <nav className="navbar navbar-expand-lg bg-white" style={{height: '80px'}}>
+  <div className="container bg-white">
     <a className="navbar-brand fw-bold fs-3" href="/">E-Library</a>
     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
       <span className="navbar-toggler-icon"></span>
@@ -42,6 +43,11 @@ export const Header = () => {
         <li className="nav-item">
           <a className={ location.pathname == '/koleksi' ? "nav-link active" : 'nav-link' } style={{fontSize: '16px'}} aria-current="page" href="/koleksi">Koleksi</a>
         </li>
+        {role != 'peminjam' ? (
+        <li className="nav-item">
+          <a className="nav-link" style={{fontSize: '16px'}} aria-current="page" href="/dashboard">Dashboard</a>
+        </li>
+        ) : null}
       </ul>
       <div className="d-flex" role="search">
         {token == null ? (
