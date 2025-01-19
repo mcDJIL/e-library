@@ -1,16 +1,27 @@
 import { useEffect, useState } from "react";
 import client from "../../Utils/client";
 import "../../assets/css/style.css";
+import { useLocation } from "react-router-dom";
 
 export const PrintReport = () => {
+  const location = useLocation();
+  const { borrowStatus, borrowVerif, startDate, endDate } = location.state || {}; // Mengambil parameter dari state
+
   const [borrowRecords, setBorrowRecords] = useState([]);
 
   useEffect(() => {
     getBorrowRecords();
-  }, []);
+  }, [borrowStatus, borrowVerif, startDate, endDate]);
 
   const getBorrowRecords = () => {
-    client.get("report").then(({ data }) => {
+    client.get("report", {
+      params: {
+        borrow_status: borrowStatus,
+        borrow_verif: borrowVerif,
+        start_date: startDate,
+        end_date: endDate,
+      }
+    }).then(({ data }) => {
       setBorrowRecords(data.data);
       console.log(data.data);
     }).finally(() => {

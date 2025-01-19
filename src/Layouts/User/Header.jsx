@@ -43,7 +43,10 @@ export const Header = () => {
         <li className="nav-item">
           <a className={ location.pathname == '/koleksi' ? "nav-link active" : 'nav-link' } style={{fontSize: '16px'}} aria-current="page" href="/koleksi">Koleksi</a>
         </li>
-        {role != 'peminjam' ? (
+        <li className="nav-item">
+          <a className={ location.pathname == '/riwayat' ? "nav-link active" : 'nav-link' } style={{fontSize: '16px'}} aria-current="page" href="/riwayat">Riwayat Peminjaman</a>
+        </li>
+        {role != 'peminjam' && role != null ? (
         <li className="nav-item">
           <a className="nav-link" style={{fontSize: '16px'}} aria-current="page" href="/dashboard">Dashboard</a>
         </li>

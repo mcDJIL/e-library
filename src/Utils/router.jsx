@@ -15,6 +15,8 @@ import { DetailBook } from "../Pages/User/DetailBook";
 import { Collection } from "../Pages/User/Collection";
 import { Report } from "../Pages/Admin/Report";
 import { PrintReport } from "../Pages/Print/PrintReport";
+import { BookReview } from "../Pages/Admin/BookReview";
+import { BorrowHistory } from "../Pages/User/BorrowHistory";
 
 const router = createBrowserRouter([
     {
@@ -37,6 +39,10 @@ const router = createBrowserRouter([
                 path: '/koleksi',
                 element: <Collection />
             },
+            {
+                path: '/riwayat',
+                element: <BorrowHistory />
+            }
         ],
     },
     {
@@ -62,6 +68,10 @@ const router = createBrowserRouter([
             {
                 path: '/master-data/pengguna',
                 element: <User />
+            },
+            {
+                path: '/manajemen/ulasan',
+                element: <BookReview />
             },
             {
                 path: '/manajemen/peminjaman',

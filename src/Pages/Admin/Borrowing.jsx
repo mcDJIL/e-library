@@ -30,16 +30,21 @@ export const Borrowing = () => {
     setSelectedDetail(item);
   }
 
-  const handleStatus = (id, status) => {
+  const handleStatus = (id, status, verif) => {
     setIsLoading(true)
 
     let data = {
-        borrow_status: status
+        borrow_status: status,
+        borrow_verif: verif
     }
+
+    let text;
+
+    status == 'borrowed' ? text = 'Untuk mengembalikan status peminjaman ini' : text = 'Untuk menyelesaikan peminjaman ini';
 
     Swal.fire({
         title: "Apakah kamu yakin?",
-        text: "Untuk menyelesaikan peminjaman ini",
+        text: text,
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -59,7 +64,43 @@ export const Borrowing = () => {
             })
         }
       });
+
+      setIsLoading(false);
     }
+
+  const handleVefication = (id, verif, status) => {
+    setIsLoading(true)
+
+    let data = {
+      borrow_verif: verif,
+      borrow_status: status,
+    }
+
+    Swal.fire({
+        title: "Apakah kamu yakin?",
+        text: "Kamu tidak bisa mengembalikannya lagi",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Ya",
+        cancelButtonText: "Batal"
+      }).then((result) => {
+        if (result.isConfirmed) {
+            client.put(`borrow_verification/${id}`, data).then(({data}) => {
+                showToast(data.message, 'success');
+                closeModal();
+                getBorrowRecords();
+            }).catch((error) => {
+                showToast(error.response.data.message, 'error');
+            }).finally(() => {
+                setIsLoading(false);
+            })
+        }
+      });
+
+      setIsLoading(false);
+  }
 
     const formatDate = (dateString) => {
       const months = [
@@ -107,13 +148,24 @@ export const Borrowing = () => {
                         <td>{item.user.name}</td>
                         <td>{item.book.title}</td>
                         <td>{formatDate(item.borrowed_at)}</td>
-                        <td>{formatDate(item.returned_at ?? '-')}</td>
                         <td>
-                            {item.borrow_status == 'borrowed' ? (
+                          {item.returned_at != null ? (
+                            formatDate(item.returned_at)
+                          ) : (
+                            '-'
+                          )}
+                        </td>
+                        <td>
+                            {item.borrow_verif == 'menunggu' ? (
+                              <label className="badge badge-info">Menunggu Konfirmasi</label>
+                            ) : item.borrow_verif == 'ditolak' ? (
+                              <label className="badge badge-danger">Ditolak</label>
+                            ) : (
+                              item.borrow_status == 'borrowed' ? (
                                 <label className="badge badge-danger">Dipinjam</label>
                             ) : (
                                 <label className="badge badge-success">Dikembalikan</label>
-                            )}
+                            ))}
                         </td>
                         <td>
                           <button 
@@ -128,7 +180,7 @@ export const Borrowing = () => {
                     ))
                 ) : (
                     <tr>
-                        <td colSpan={7}>Data kategori kosong</td>
+                        <td colSpan={7}>Data peminjaman kosong</td>
                     </tr>
                 )}
               </tbody>
@@ -147,9 +199,17 @@ export const Borrowing = () => {
             <div className="modal-body">
                 {selectedDetail && (
                 <div className="row borrow-detail">
-                    <h3 className="mb-4">Status {selectedDetail.borrow_status == 'borrowed' ? 
-                        <span className="text-danger">Dipinjam</span> : 
-                        <span className="text-success">Dikembalikan</span>}
+                    <h3 className="mb-4">Status
+                        {selectedDetail.borrow_verif == 'menunggu' ? (
+                              <span className="ms-2 text-info">Menunggu Konfirmasi</span>
+                            ) : selectedDetail.borrow_verif == 'ditolak' ? (
+                              <span className="ms-2 text-danger">Ditolak</span>
+                            ) : (
+                              selectedDetail.borrow_status == 'borrowed' ? (
+                                <span className="ms-2 text-danger">Dipinjam</span>
+                            ) : (
+                                <span className="ms-2 text-success">Dikembalikan</span>
+                            ))}
                     </h3>
 
                     <div className="col-12 col-md-6 mb-3">
@@ -195,8 +255,27 @@ export const Borrowing = () => {
             <div className="modal-footer">
                 <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                 {selectedDetail && (
+                  selectedDetail.borrow_verif == 'menunggu' ? (
+                    <>  
+                      <button disabled={isLoading} onClick={ () => handleVefication(selectedDetail.id, 'ditolak', 'returned') } type="button" className="btn btn-danger">
+                            {isLoading && (
+                                <i className="fa fa-spinner fa-spin me-1"></i>
+                            )}
+        
+                            {isLoading ? ' Loading' : 'Tolak'}
+                        </button>
+                      <button disabled={isLoading} onClick={ () => handleVefication(selectedDetail.id, 'disetujui', 'borrowed') } type="button" className="btn btn-success">
+                            {isLoading && (
+                                <i className="fa fa-spinner fa-spin me-1"></i>
+                            )}
+        
+                            {isLoading ? ' Loading' : 'Setujui'}
+                        </button>
+                    </>
+                  ) : (
+                    
                     selectedDetail.borrow_status == 'returned' ? (
-                        <button disabled={isLoading} onClick={ () => handleStatus(selectedDetail.id, 'borrowed') } type="button" className="btn btn-danger">
+                        <button disabled={isLoading} onClick={ () => handleStatus(selectedDetail.id, 'borrowed', 'menunggu') } type="button" className="btn btn-danger">
                             {isLoading && (
                                 <i className="fa fa-spinner fa-spin me-1"></i>
                             )}
@@ -204,14 +283,26 @@ export const Borrowing = () => {
                             {isLoading ? ' Loading' : 'Batalkan'}
                         </button>
                     ) : (
-                        <button disabled={isLoading} onClick={ () => handleStatus(selectedDetail.id, 'returned') } type="button" className="btn btn-primary">
+                        <>
+                        <button disabled={isLoading} onClick={ () => handleStatus(selectedDetail.id, 'borrowed', 'menunggu') } type="button" className="btn btn-danger">
+                            {isLoading && (
+                                <i className="fa fa-spinner fa-spin me-1"></i>
+                            )}
+        
+                            {isLoading ? ' Loading' : 'Batalkan'}
+                        </button>
+
+                        <button disabled={isLoading} onClick={ () => handleStatus(selectedDetail.id, 'returned', 'disetujui') } type="button" className="btn btn-primary">
                             {isLoading && (
                                 <i className="fa fa-spinner fa-spin me-1"></i>
                             )}
 
                             {isLoading ? ' Loading' : 'Kembalikan'}
                         </button>
+                        </>
+
                     )
+                  )
                 )}
             </div>
             </div>
